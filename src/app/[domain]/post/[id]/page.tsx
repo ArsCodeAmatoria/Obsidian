@@ -3,12 +3,9 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Comment } from "@/components/threads/comment"
 import { CommentForm } from "@/components/threads/comment-form"
-import { Button } from "@/components/ui/button"
-import { hasAccessToContent } from "@/lib/sbt"
-import { hasZKAccess } from "@/lib/zk"
 
 interface PostPageProps {
   params: {
@@ -17,16 +14,31 @@ interface PostPageProps {
   }
 }
 
+interface Post {
+  id: string;
+  domain: string;
+  title: string;
+  content: string;
+  author: string;
+  time: string;
+}
+
+interface CommentType {
+  author: string;
+  content: string;
+  time: string;
+}
+
 export default function PostPage({ params }: PostPageProps) {
   const { domain, id } = params
-  const [post, setPost] = useState<any>(null)
-  const [comments, setComments] = useState<any[]>([])
+  const [post, setPost] = useState<Post | null>(null)
+  const [comments, setComments] = useState<CommentType[]>([])
   const [loading, setLoading] = useState(true)
   const [hasAccess, setHasAccess] = useState(false)
 
   useEffect(() => {
     // Mock data fetch
-    const mockPost = {
+    const mockPost: Post = {
       id,
       domain,
       title: `Thread #${id} in ${domain}`,
@@ -35,7 +47,7 @@ export default function PostPage({ params }: PostPageProps) {
       time: '3 hours ago'
     }
 
-    const mockComments = [
+    const mockComments: CommentType[] = [
       {
         author: 'zk_user2',
         content: 'I agree with this proposal. It would solve several issues we\'ve been facing.',
@@ -61,7 +73,7 @@ export default function PostPage({ params }: PostPageProps) {
 
   const handleSubmitComment = (content: string) => {
     // Would actually submit to chain/IPFS
-    const newComment = {
+    const newComment: CommentType = {
       author: 'You',
       content,
       time: 'Just now'

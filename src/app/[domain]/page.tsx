@@ -11,14 +11,23 @@ interface DomainPageProps {
   }
 }
 
+interface Thread {
+  id: string;
+  domain: string;
+  title: string;
+  author: string;
+  time: string;
+  sbtBadge?: string;
+}
+
 export default function DomainPage({ params }: DomainPageProps) {
   const { domain } = params
-  const [threads, setThreads] = useState<any[]>([])
+  const [threads, setThreads] = useState<Thread[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Mock data for demonstration
-    const mockThreads = [
+    const mockThreads: Thread[] = [
       {
         id: '1',
         domain,

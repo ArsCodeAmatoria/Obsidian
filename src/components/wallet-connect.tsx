@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { web3Accounts, web3Enable } from "@polkadot/extension-dapp"
 import { Button } from "@/components/ui/button"
 

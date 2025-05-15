@@ -14,14 +14,27 @@ interface DAOPageProps {
   }
 }
 
+interface Proposal {
+  id: string;
+  title: string;
+  description: string;
+  status: 'active' | 'passed' | 'failed';
+  votes: {
+    yes: number;
+    no: number;
+    abstain: number;
+  };
+  endTime: string;
+}
+
 export default function DAOPage({ params }: DAOPageProps) {
   const { domain } = params
-  const [proposals, setProposals] = useState<any[]>([])
+  const [proposals, setProposals] = useState<Proposal[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Mock data for demonstration
-    const mockProposals = [
+    const mockProposals: Proposal[] = [
       {
         id: '1',
         title: 'Treasury Funding Allocation',

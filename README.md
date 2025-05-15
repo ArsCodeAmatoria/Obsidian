@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Obsidian
+
+A Reddit/X-style dApp for decentralized discussions using .dot domains, built with Next.js + Tailwind + shadcn/ui.
+
+## Features
+
+- Feed of recent threads across all domains
+- Domain-specific thread lists
+- Thread view with nested comments
+- DAO proposal management system
+- Dark/light mode
+- Integration with Substrate (Ink! contracts)
+- ZK login capabilities (Sismo/Semaphore)
+- SBT checks for access control
+- IPFS integration for content storage
+
+## Project Structure
+
+- `src/app/page.tsx`: Feed of recent threads across all domains
+- `src/app/[domain]/page.tsx`: Thread list for a specific .dot domain
+- `src/app/[domain]/post/[id]/page.tsx`: Single thread with comments
+- `src/app/[domain]/dao/page.tsx`: DAO governance interface
+- `src/components/`: Reusable UI components
+- `src/lib/substrate.ts`: Substrate API integration
+- `src/lib/zk.ts`: ZK proof verification helpers
+- `src/lib/ipfs.ts`: IPFS utilities
+- `src/lib/sbt.ts`: SBT permission checks
+- `src/lib/data.ts`: Sample data for demo purposes
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+- Polkadot{.js} browser extension (for wallet connection)
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/YourUsername/Obsidian.git
+cd Obsidian
+
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js**: React framework with App Router
+- **Tailwind CSS**: Utility-first CSS framework
+- **shadcn/ui**: Re-usable UI components
+- **Polkadot.js**: API for Substrate blockchain interaction
+- **IPFS** (mock): Decentralized storage
+- **ZK** (mock): Zero knowledge proof verification
+- **SBT** (mock): Soul Bound Token verification
 
-## Learn More
+## Future Enhancements
 
-To learn more about Next.js, take a look at the following resources:
+- Real blockchain integration with Substrate
+- Actual ZK proof generation and verification
+- Full IPFS integration for content storage
+- Enhanced DAO features (governance, voting)
+- Mobile optimization
+- User profiles and reputation system
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
