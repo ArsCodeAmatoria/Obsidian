@@ -1,15 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { ThreadCard } from "@/components/threads/thread-card"
 import { Button } from "@/components/ui/button"
 import { threads as sampleThreads } from "@/lib/data"
 
+interface DomainParams {
+  domain: string
+}
+
 interface DomainPageProps {
-  params: {
-    domain: string
-  }
+  params: DomainParams
 }
 
 interface Thread {
@@ -21,10 +23,7 @@ interface Thread {
   sbtBadge?: string;
 }
 
-export default function DomainPage(props: DomainPageProps) {
-  // Using destructuring with default values to safely access params
-  const domain = props.params?.domain || '';
-  
+function DomainContent({ domain }: { domain: string }) {
   const [threads, setThreads] = useState<Thread[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -42,7 +41,7 @@ export default function DomainPage(props: DomainPageProps) {
   }, [domain])
 
   return (
-    <div>
+    <>
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-bold capitalize">{domain}</h1>
@@ -77,6 +76,16 @@ export default function DomainPage(props: DomainPageProps) {
           )}
         </div>
       )}
+    </>
+  )
+}
+
+export default function DomainPage({ params }: DomainPageProps) {
+  return (
+    <div>
+      <Suspense fallback={<div className="text-center py-12">Loading domain...</div>}>
+        <DomainContent domain={params.domain} />
+      </Suspense>
     </div>
   )
 } 

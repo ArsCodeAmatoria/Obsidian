@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
@@ -9,10 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { proposals as sampleProposals } from "@/lib/data"
 
+interface DomainParams {
+  domain: string;
+}
+
 interface DAOPageProps {
-  params: {
-    domain: string
-  }
+  params: DomainParams;
 }
 
 interface Proposal {
@@ -28,10 +30,7 @@ interface Proposal {
   endTime: string;
 }
 
-export default function DAOPage(props: DAOPageProps) {
-  // Using destructuring with default values to safely access params
-  const domain = props.params?.domain || '';
-  
+function DAOContent({ domain }: DomainParams) {
   const [proposals, setProposals] = useState<Proposal[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -49,7 +48,7 @@ export default function DAOPage(props: DAOPageProps) {
   }, [domain])
 
   return (
-    <div>
+    <>
       <div className="mb-4">
         <Link href={`/${domain}`} className="flex items-center text-muted-foreground hover:text-foreground">
           <ArrowLeft size={16} className="mr-1" />
@@ -138,6 +137,16 @@ export default function DAOPage(props: DAOPageProps) {
           <div className="text-center py-12 text-muted-foreground">No failed proposals</div>
         </TabsContent>
       </Tabs>
+    </>
+  )
+}
+
+export default function DAOPage({ params }: DAOPageProps) {
+  return (
+    <div>
+      <Suspense fallback={<div className="text-center py-12">Loading DAO...</div>}>
+        <DAOContent domain={params.domain} />
+      </Suspense>
     </div>
   )
 } 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,11 +8,13 @@ import { Comment } from "@/components/threads/comment"
 import { CommentForm } from "@/components/threads/comment-form"
 import { sampleComments } from "@/lib/data"
 
+interface PostParams {
+  domain: string;
+  id: string;
+}
+
 interface PostPageProps {
-  params: {
-    domain: string
-    id: string
-  }
+  params: PostParams;
 }
 
 interface Post {
@@ -30,11 +32,7 @@ interface CommentType {
   time: string;
 }
 
-export default function PostPage(props: PostPageProps) {
-  // Using destructuring with default values to safely access params
-  const domain = props.params?.domain || '';
-  const id = props.params?.id || '';
-  
+function PostContent({ domain, id }: PostParams) {
   const [post, setPost] = useState<Post | null>(null)
   const [comments, setComments] = useState<CommentType[]>([])
   const [loading, setLoading] = useState(true)
@@ -86,7 +84,7 @@ export default function PostPage(props: PostPageProps) {
   }
 
   return (
-    <div>
+    <>
       <div className="mb-4">
         <Link href={`/${domain}`} className="flex items-center text-muted-foreground hover:text-foreground">
           <ArrowLeft size={16} className="mr-1" />
@@ -125,6 +123,16 @@ export default function PostPage(props: PostPageProps) {
       </div>
 
       <CommentForm onSubmit={handleSubmitComment} hasAccess={hasAccess} />
+    </>
+  )
+}
+
+export default function PostPage({ params }: PostPageProps) {
+  return (
+    <div>
+      <Suspense fallback={<div className="text-center py-12">Loading post...</div>}>
+        <PostContent domain={params.domain} id={params.id} />
+      </Suspense>
     </div>
   )
 } 
