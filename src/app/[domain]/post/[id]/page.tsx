@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Comment } from "@/components/threads/comment"
 import { CommentForm } from "@/components/threads/comment-form"
+import { sampleComments } from "@/lib/data"
 
 interface PostPageProps {
   params: {
@@ -29,14 +30,19 @@ interface CommentType {
   time: string;
 }
 
-export default function PostPage({ params }: PostPageProps) {
-  const { domain, id } = params
+export default function PostPage(props: PostPageProps) {
+  // Using destructuring with default values to safely access params
+  const domain = props.params?.domain || '';
+  const id = props.params?.id || '';
+  
   const [post, setPost] = useState<Post | null>(null)
   const [comments, setComments] = useState<CommentType[]>([])
   const [loading, setLoading] = useState(true)
   const [hasAccess, setHasAccess] = useState(false)
 
   useEffect(() => {
+    if (!domain || !id) return;
+    
     // Mock data fetch
     const mockPost: Post = {
       id,
@@ -47,19 +53,9 @@ export default function PostPage({ params }: PostPageProps) {
       time: '3 hours ago'
     }
 
-    const mockComments: CommentType[] = [
-      {
-        author: 'zk_user2',
-        content: 'I agree with this proposal. It would solve several issues we\'ve been facing.',
-        time: '2 hours ago'
-      },
-      {
-        author: 'zk_user3',
-        content: 'Have you considered the impact on storage requirements?',
-        time: '1 hour ago'
-      }
-    ]
-
+    // Get comments from sample data if available, otherwise use empty array
+    const mockComments = sampleComments[id] || [];
+    
     // Simulate network delay
     setTimeout(() => {
       setPost(mockPost)
@@ -83,6 +79,10 @@ export default function PostPage({ params }: PostPageProps) {
 
   if (loading) {
     return <div className="text-center py-12">Loading...</div>
+  }
+
+  if (!post) {
+    return <div className="text-center py-12">Thread not found</div>
   }
 
   return (

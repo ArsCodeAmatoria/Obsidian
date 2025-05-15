@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import { proposals as sampleProposals } from "@/lib/data"
 
 interface DAOPageProps {
   params: {
@@ -27,45 +28,25 @@ interface Proposal {
   endTime: string;
 }
 
-export default function DAOPage({ params }: DAOPageProps) {
-  const { domain } = params
+export default function DAOPage(props: DAOPageProps) {
+  // Using destructuring with default values to safely access params
+  const domain = props.params?.domain || '';
+  
   const [proposals, setProposals] = useState<Proposal[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockProposals: Proposal[] = [
-      {
-        id: '1',
-        title: 'Treasury Funding Allocation',
-        description: 'Allocate 1000 DOT to fund development of new features',
-        status: 'active',
-        votes: { yes: 15, no: 5, abstain: 2 },
-        endTime: 'in 2 days'
-      },
-      {
-        id: '2',
-        title: 'Governance Parameter Change',
-        description: 'Change voting period from 7 days to 5 days',
-        status: 'active',
-        votes: { yes: 12, no: 8, abstain: 1 },
-        endTime: 'in 4 days'
-      },
-      {
-        id: '3',
-        title: 'Add New Admin',
-        description: 'Add user 0x1234... as domain admin',
-        status: 'passed',
-        votes: { yes: 20, no: 3, abstain: 0 },
-        endTime: 'ended 1 day ago'
-      }
-    ]
+    if (!domain) return;
     
+    // Get the domain-specific proposals
+    const domainProposals = sampleProposals[domain] || [];
+    
+    // Simulate network delay
     setTimeout(() => {
-      setProposals(mockProposals)
+      setProposals(domainProposals)
       setLoading(false)
     }, 500)
-  }, [])
+  }, [domain])
 
   return (
     <div>

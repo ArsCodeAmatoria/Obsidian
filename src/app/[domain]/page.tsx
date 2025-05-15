@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ThreadCard } from "@/components/threads/thread-card"
 import { Button } from "@/components/ui/button"
+import { threads as sampleThreads } from "@/lib/data"
 
 interface DomainPageProps {
   params: {
@@ -20,41 +21,22 @@ interface Thread {
   sbtBadge?: string;
 }
 
-export default function DomainPage({ params }: DomainPageProps) {
-  const { domain } = params
+export default function DomainPage(props: DomainPageProps) {
+  // Using destructuring with default values to safely access params
+  const domain = props.params?.domain || '';
+  
   const [threads, setThreads] = useState<Thread[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockThreads: Thread[] = [
-      {
-        id: '1',
-        domain,
-        title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} Thread 1`,
-        author: 'zk_user1',
-        time: '2 hours ago',
-        sbtBadge: 'Core Contributor'
-      },
-      {
-        id: '2',
-        domain,
-        title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} Thread 2`,
-        author: 'zk_user2',
-        time: '5 hours ago',
-        sbtBadge: 'Member'
-      },
-      {
-        id: '3',
-        domain,
-        title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} Thread 3`,
-        author: 'zk_user3',
-        time: '1 day ago'
-      }
-    ]
+    if (!domain) return;
     
+    // Filter the sample threads for this domain
+    const domainThreads = sampleThreads.filter(thread => thread.domain === domain);
+    
+    // Simulate network delay
     setTimeout(() => {
-      setThreads(mockThreads)
+      setThreads(domainThreads)
       setLoading(false)
     }, 500)
   }, [domain])
@@ -78,17 +60,21 @@ export default function DomainPage({ params }: DomainPageProps) {
         <div className="text-center py-12">Loading...</div>
       ) : (
         <div className="grid gap-4">
-          {threads.map((thread) => (
-            <ThreadCard
-              key={thread.id}
-              id={thread.id}
-              domain={thread.domain}
-              title={thread.title}
-              author={thread.author}
-              time={thread.time}
-              sbtBadge={thread.sbtBadge}
-            />
-          ))}
+          {threads.length > 0 ? (
+            threads.map((thread) => (
+              <ThreadCard
+                key={thread.id}
+                id={thread.id}
+                domain={thread.domain}
+                title={thread.title}
+                author={thread.author}
+                time={thread.time}
+                sbtBadge={thread.sbtBadge}
+              />
+            ))
+          ) : (
+            <div className="text-center py-12 text-muted-foreground">No threads found in this domain</div>
+          )}
         </div>
       )}
     </div>
