@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ThreadCard } from "@/components/threads/thread-card"
 import { Button } from "@/components/ui/button"
 import { threads as sampleThreads } from "@/lib/data"
+import { ThreadForm } from "@/components/threads/thread-form"
 
 interface Thread {
   id: string;
@@ -43,7 +44,7 @@ export function DomainContent({ domain }: { domain: string }) {
           <Link href={`/${domain}/dao`}>
             <Button variant="outline" size="sm">DAO</Button>
           </Link>
-          <Button size="sm">New Thread</Button>
+          <ThreadForm />
         </div>
       </div>
 

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ModeToggle } from "@/components/mode-toggle"
 import { WalletConnect } from "@/components/wallet-connect"
+import { SearchBar } from "@/components/layout/search"
 
 export function Navbar() {
   return (
@@ -12,6 +13,9 @@ export function Navbar() {
           <Link href="/" className="font-bold text-xl">
             Obsidian
           </Link>
+        </div>
+        <div className="flex items-center gap-4 flex-1 max-w-sm mx-auto">
+          <SearchBar />
         </div>
         <div className="flex items-center gap-4">
           <ModeToggle />
